@@ -1,0 +1,30 @@
+{
+  "name": "EmailService",
+  "description": "Simple e-mail service with node.js",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mstypsan/EmailService.git"
+  },
+  "dependencies": {
+    "async": "2.1.1",
+    "dotenv": "2.0.0",
+    "le_node": "^1.2.0",
+    "mailgun-js": "0.7.12",
+    "node-uuid": "^1.4.7",
+    "request": "2.69.0",
+    "sendgrid": "^4.7.0",
+    "validator": "^6.1.0",
+    "winston": "2.1.1"
+  },
+  "devDependencies": {
+    "mocha": "2.4.5",
+    "proxyquire": "^1.7.10",
+    "sinon": "^1.17.6"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha test"
+  },
+  "private": true
+}
