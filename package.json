@@ -1,10 +1,9 @@
 {
   "name": "EmailService",
   "description": "Simple e-mail service with node.js",
-  "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:mstypsan/EmailService.git"
+    "url": "git@github.com:mstypsan/EmailService-serverless.git"
   },
   "dependencies": {
     "async": "2.1.1",
@@ -23,7 +22,6 @@
     "sinon": "^1.17.6"
   },
   "scripts": {
-    "start": "node app.js",
     "test": "mocha test"
   },
   "private": true
