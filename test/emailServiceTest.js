@@ -7,9 +7,10 @@ describe('Email service', function () {
   var emailService, sendgridStub, mailgunStub;
 
   beforeEach(function () {
+    this.timeout(3000);
     sendgridStub = sinon.stub();
     mailgunStub = sinon.stub();
-    emailService = proxyquire('../libs/emailService.js', {
+    emailService = proxyquire('../libs/emailService', {
       './sendgridService': {
         sendEmail: sendgridStub
       },
@@ -26,13 +27,13 @@ describe('Email service', function () {
   });
 
   it('if sendgrid throws an error it should fallback to mailgun', function () {
-    sendgridStub.yields(['error']);
+    sendgridStub.yields('error');
     emailService.sendEmail('test@email.com', 'subject', 'content');
     assert(mailgunStub.calledOnce);
   });
 
   it('if mailgun throws an error it should fallback to sendgrid', function () {
-    mailgunStub.yields(['error']);
+    mailgunStub.yields('error');
     emailService.sendEmail('test@email.com', 'subject', 'content');
     assert(sendgridStub.calledOnce);
   });
