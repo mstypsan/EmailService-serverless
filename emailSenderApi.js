@@ -23,7 +23,7 @@ function sendEmail(event, context, callback) {
   }
   
   if(errors.length){
-    callback(errors);
+    callback({error:errors, errorCode:4001});
     return
   }
 
@@ -33,7 +33,7 @@ function sendEmail(event, context, callback) {
       callback(null, 'E-mail is processed');
     }
     else {
-      callback(error);
+      callback({error:"Unexpected error", errorCode:5001});
     }
   });
 }
