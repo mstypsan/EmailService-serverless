@@ -13,13 +13,13 @@ function sendEmail(event, context) {
   
   var errors = [];
   if(!subject){
-    errors.push('Please enter the subject of the e-mail');
+    errors.push('Please enter the subject of the e-mail.');
   }
   if(!content){
-    errors.push('Please enter the content of the e-mail');
+    errors.push('Please enter the content of the e-mail.');
   }
   if(!recipient || !validator.isEmail(recipient)){
-    errors.push('Please enter a valid e-mail for the recipient');
+    errors.push('Please enter a valid e-mail for the recipient.');
   }
   
   if(errors.length){
