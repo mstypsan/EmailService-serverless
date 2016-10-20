@@ -32,6 +32,7 @@ The service is deployed using Amazon's serverless services, AWS lambda and AWS A
 
 
 ##Limitations
+- AWS lambda does not allow for the payload to be more than 128KB http://docs.aws.amazon.com/lambda/latest/dg/limits.html#limits-list
 - The service is build using only one e-mail recipient. 
 - It currently does not support any authorization and it is public for everyone.
 - The processed e-mails are not saved somewhere. The same applies when there is an internal error from the service and the e-mail remains unprocessed.
