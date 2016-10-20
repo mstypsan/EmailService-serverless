@@ -1,17 +1,17 @@
 # EmailService-serverless
-Simple e-mail service API that is responsible for sending an e-mail to a single recipient. It uses 2 different e-mail providers, Sendgrid and Mailgun, in order to send the e-mail. The idea behind the e-mail service is to make it robust and highly available and scalable. So that the client does not have to worry on whether the e-mail is successfully sent or not. 
+Simple e-mail service API that is responsible for sending an e-mail to a single recipient. It uses 2 different e-mail providers, Sendgrid and Mailgun, in order to send the e-mail. The idea behind the e-mail service is to make it robust, highly available and scalable, so that the client does not have to worry on whether the e-mail is successfully sent or not. 
 
-It will starts by default using Sendgrid and if Sendgrid fails will try again using Mailgun. So this way it ensures that the e-mail will successfully be sent. It a backend node.js and exposes an API that can be used to send to pass the necessary information and then send the e-mail.
+It will start by using by default Sendgrid and if Sendgrid fails, it will try again using Mailgun. So this way it ensures that the e-mail will successfully be sent. It a backend node.js and exposes an API that can be used to pass the necessary information and then send the e-mail.
 
 # Example
 You can use any HTTP Client to create a POST request
 
 **<code> POST </code> /email-service/email/send** 
 
-##Parameter##
-- **subject** _(required)_ — The subject of the e-mail.
-- **content** _(required)_ — The content of the e-mail.
-- **recipient** _(required)_ — The recipient of the e-mail.
+##Parameters##
+- **subject** _(required)_ â€” The subject of the e-mail.
+- **content** _(required)_ â€” The content of the e-mail.
+- **recipient** _(required)_ â€” The recipient of the e-mail.
 
 ##Example##
 **Request body**
@@ -24,11 +24,12 @@ You can use any HTTP Client to create a POST request
 ``` 
 
 **Response**
-The response will have a status of 200 if the e-mail is accepted indicating that it will be processed.
+
+The response will have a status of 200 if the e-mail is accepted indicating that it is processed.
 
 
 ##Scalability
-The service is deployed using Amazon's serverless services, AWS lambda and AWS Api Gateway. AWS lambda is hosted by Amazon that ensures high availability and scaling according to the number of requests. And API gateway helps at exposing HTTP endpoints that later communicates with AWS lambda
+The service is deployed using Amazon's serverless services, AWS lambda and AWS Api Gateway. AWS lambda is hosted by Amazon that ensures high availability and scaling according to the number of requests. And API gateway helps at exposing HTTP endpoints that later communicate with AWS lambda
 
 ## Service deployment
 .env file
