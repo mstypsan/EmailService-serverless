@@ -11,7 +11,7 @@ var sendEmail = function(recipient, subject, content, callback){
 
   var emailMessage = new EmailMessage(sender, recipient, subject, content);
 
-  async.someSeries(emailProviders, sendEmailWithEveryProvider.bind(sendEmailWithEveryProvider, emailMessage), function (err, success) {
+  async.someSeries(emailProviders, sendEmailWithProvider.bind(sendEmailWithProvider, emailMessage), function (err, success) {
     if(success) {
       winston.info('Done processing e-mail id: ' + emailMessage.id);
       callback();
@@ -25,7 +25,7 @@ var sendEmail = function(recipient, subject, content, callback){
   });
 };
 
-var sendEmailWithEveryProvider = function(emailMessage, emailProvider, callback) {
+var sendEmailWithProvider = function(emailMessage, emailProvider, callback) {
   emailProvider.sendEmail(emailMessage, function (error) {
       callback(null, !error);
   })
