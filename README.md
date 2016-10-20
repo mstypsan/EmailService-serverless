@@ -1,4 +1,4 @@
-# EmailService-serverless
+# EmailService
 Simple e-mail service API that is responsible for sending an e-mail to a single recipient. It uses 2 different e-mail providers, Sendgrid and Mailgun, in order to send the e-mail. The idea behind the e-mail service is to make it robust, highly available and scalable, so that the client does not have to worry whether the e-mail is successfully sent or not. 
 
 It will start by using by default Sendgrid and if Sendgrid fails, it will try again using Mailgun. So this way it ensures that the e-mail will successfully be sent. It is a backend service built in node.js and exposes an API that can be used to pass the necessary information and then send the e-mail.
@@ -13,7 +13,6 @@ You can use any HTTP Client to create a POST request
 - **content** _(required)_ — The content of the e-mail.
 - **recipient** _(required)_ — The recipient of the e-mail.
 
-##Example##
 **Request body**
 ```JSON
 {
