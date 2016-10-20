@@ -3,7 +3,7 @@ var winston = require('winston');
 var Mailgun = require('mailgun-js');
 
 var sendEmail = function(emailMessage, callback){
-  var mailgun = Mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN});
+  var mailgun = new Mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN});
   winston.info('E-mail about to be handled by Mailgun');
   var email = buildEmail(emailMessage);
 
@@ -24,7 +24,7 @@ var buildEmail = function(emailMessage) {
     from: emailMessage.sender,
     to: emailMessage.recipient,
     subject: emailMessage.subject,
-    text: emailMessage.content
+    html: emailMessage.content
   };
   
   return email;

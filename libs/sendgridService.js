@@ -7,7 +7,7 @@ var sendEmail = function(emailMessage, callback){
   winston.info('E-mail about to be handled by Sendgrid');
   var email = buildEmail(emailMessage);
 
-  var sendgrid = require('sendgrid')(process.env.SENDGRID_API_KEY);
+  var sendgrid = new Sendgrid(process.env.SENDGRID_API_KEY);
   var request = sendgrid.emptyRequest({
     method: 'POST',
     path: '/v3/mail/send',

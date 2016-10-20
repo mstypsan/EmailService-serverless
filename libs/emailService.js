@@ -18,7 +18,7 @@ var sendEmail = function(recipient, subject, content, callback){
     }
     else {
       //At this point the e-mail will not be sent.
-      //We need to persist the e-mail in a storage so that it is processed later.
+      //We need to store the e-mail data so that it is processed later.
       winston.error('Unable to process e-mail for recipient: ' + recipient);
       callback('Not processed');
     }
