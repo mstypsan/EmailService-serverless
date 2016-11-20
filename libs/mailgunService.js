@@ -24,7 +24,8 @@ var buildEmail = function(emailMessage) {
     from: emailMessage.sender,
     to: emailMessage.recipient,
     subject: emailMessage.subject,
-    html: emailMessage.content
+    html: emailMessage.content,
+    messageId: emailMessage.id
   };
   
   return email;
