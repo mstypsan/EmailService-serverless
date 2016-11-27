@@ -6,9 +6,8 @@ var sendgridService = require('./sendgridService');
 var mailgunService = require('./mailgunService');
 var emailProviders = [sendgridService, mailgunService];
 
-var sendEmail = function(recipient, subject, content, callback){
+var handleEmail = function(recipient, subject, content, callback){
   var sender = process.env.SENDER_EMAIL;
-
   var emailMessage = new EmailMessage(sender, recipient, subject, content);
 
   async.someSeries(emailProviders, sendEmailWithProvider.bind(sendEmailWithProvider, emailMessage), function (err, success) {
@@ -31,4 +30,4 @@ var sendEmailWithProvider = function(emailMessage, emailProvider, callback) {
   })
 };
 
-module.exports.sendEmail = sendEmail;
+module.exports.handleEmail = handleEmail;
