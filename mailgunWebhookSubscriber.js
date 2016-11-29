@@ -19,7 +19,7 @@ var receiveWebhook = function(event, context, callback) {
 
   var emailStatus = getEmailStatus(emailMessage);
   emailStatus.emailService = 'Mailgun';
-  emailStatus.emailIdFromService = emailMessage.Message-Id;
+  emailStatus.emailIdFromService = emailMessage["Message-Id"];
   emailRepository.updateEventStatus(emailMessage.messageId, emailStatus, function (error) {
     if (!error) {
       callback();
