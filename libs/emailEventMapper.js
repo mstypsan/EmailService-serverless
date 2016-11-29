@@ -1,31 +1,31 @@
 'use strict';
 var EmailStatus = require('./emailStatus');
 
-var mapDeliveredStatus = function(emailService, timestamp) {
-  var emailStatus = new EmailStatus(emailService, 'delivered', timestamp);
+var mapDeliveredStatus = function(timestamp) {
+  var emailStatus = new EmailStatus('delivered', timestamp);
   return emailStatus;
 };
 
-var mapBounceStatus = function(emailService, errorCode, errorDescription, reason, timestamp) {
-  var emailStatus = new EmailStatus(emailService, 'bounced', timestamp);
+var mapBounceStatus = function(errorCode, errorDescription, reason, timestamp) {
+  var emailStatus = new EmailStatus('bounced', timestamp);
   setErrorMessage(emailStatus, errorCode, errorDescription, reason);
   return emailStatus;
 };
 
-var mapDroppedStatus = function(emailService, errorCode, errorDescription, reason, timestamp) {
-  var emailStatus = new EmailStatus(emailService, 'dropped', timestamp);
+var mapDroppedStatus = function(errorCode, errorDescription, reason, timestamp) {
+  var emailStatus = new EmailStatus('dropped', timestamp);
   setErrorMessage(emailStatus, errorCode, errorDescription, reason);
   return emailStatus;
 };
 
-var mapSpamReportStatus = function(emailService, errorCode, errorDescription, reason, timestamp) {
-  var emailStatus = new EmailStatus(emailService, 'spam-reported', timestamp);
+var mapSpamReportStatus = function(errorCode, errorDescription, reason, timestamp) {
+  var emailStatus = new EmailStatus('spam-reported', timestamp);
   setErrorMessage(emailStatus, errorCode, errorDescription, reason);
   return emailStatus;
 };
 
-var mapDeferredStatus = function(emailService, errorDescription, timestamp, args) {
-  var emailStatus = new EmailStatus(emailService, 'deferred', timestamp);
+var mapDeferredStatus = function(errorDescription, timestamp, args) {
+  var emailStatus = new EmailStatus('deferred', timestamp);
   setErrorMessage(emailStatus, null, errorDescription, null);
   emailStatus.args = args;
   return emailStatus;

@@ -1,5 +1,6 @@
-function emailStatus(emailService, status, timestamp){
-  this.emailService = emailService;
+function emailStatus(status, timestamp){
+  this.emailService = '';
+  this.emailIdFromService = '';
   this.status = status;
   this.timestamp = timestamp;
 }

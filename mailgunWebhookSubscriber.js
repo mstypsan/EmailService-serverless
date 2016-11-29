@@ -18,6 +18,8 @@ var receiveWebhook = function(event, context, callback) {
   }
 
   var emailStatus = getEmailStatus(emailMessage);
+  emailStatus.emailService = 'Mailgun';
+  emailStatus.emailIdFromService = emailMessage.Message-Id;
   emailRepository.updateEventStatus(emailMessage.messageId, emailStatus, function (error) {
     if (!error) {
       callback();
@@ -29,19 +31,17 @@ var receiveWebhook = function(event, context, callback) {
 };
 
 var getEmailStatus = function(emailMessage) {
-  var emailService = 'Mailgun';
-
   if(emailMessage.event === 'delivered') {
-    return emailEventMapper.mapDeliveredStatus(emailService, emailMessage.timestamp);
+    return emailEventMapper.mapDeliveredStatus(emailMessage.timestamp);
   }
   if (emailMessage.event === 'bounced') {
-    return emailEventMapper.mapBounceStatus(emailService, emailMessage.code, emailMessage.error, emailMessage.notification, emailMessage.timestamp);
+    return emailEventMapper.mapBounceStatus(emailMessage.code, emailMessage.error, emailMessage.notification, emailMessage.timestamp);
   }
   if (emailMessage.event === 'dropped') {
-    return emailEventMapper.mapDroppedStatus(emailService, emailMessage.code, emailMessage.description, emailMessage.reason, emailMessage.timestamp);
+    return emailEventMapper.mapDroppedStatus(emailMessage.code, emailMessage.description, emailMessage.reason, emailMessage.timestamp);
   }
   if (emailMessage.event === 'complained') {
-    return emailEventMapper.mapSpamReportStatus(emailService, emailMessage.timestamp);
+    return emailEventMapper.mapSpamReportStatus(emailMessage.timestamp);
   }
   winston.info('Not handling status '+ emailMessage.event +' for message ' + emailMessage.messageId);
 };
