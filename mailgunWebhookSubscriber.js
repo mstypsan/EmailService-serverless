@@ -3,7 +3,7 @@ require('le_node');
 var dotenv = require('dotenv');
 dotenv.config();
 var winston = require('winston');
-var emailEventMapper = require('./libs/emailEventMapper');
+var emailEventMapper = require('./mapping/emailEventMapper');
 var emailRepository = require('./libs/emailRepository');
 var Mailgun = require('mailgun-js');
 var mailgun = new Mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN});

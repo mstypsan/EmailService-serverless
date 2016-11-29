@@ -1,5 +1,5 @@
 'use strict';
-var EmailStatus = require('./emailStatus');
+var EmailStatus = require('./../libs/emailStatus');
 
 var mapDeliveredStatus = function(timestamp) {
   var emailStatus = new EmailStatus('delivered', timestamp);
