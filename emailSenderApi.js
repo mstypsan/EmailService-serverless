@@ -3,7 +3,7 @@ require('le_node');
 var dotenv = require('dotenv');
 dotenv.config();
 var winston = require('winston');
-var emailService = require('./libs/emailService');
+var emailService = require('./libs/service/emailService');
 var validator = require('validator');
 
 var sendEmail = function(event, context, callback) {

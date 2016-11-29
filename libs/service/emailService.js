@@ -1,10 +1,10 @@
 'use strict';
 var winston = require('winston');
 var async = require('async');
-var EmailMessage = require('./emailMessage');
+var EmailMessage = require('./../emailMessage');
 var sendgridService = require('./sendgridService');
 var mailgunService = require('./mailgunService');
-var emailRepository = require('./emailRepository');
+var emailRepository = require('./../emailRepository');
 var emailProviders = [sendgridService, mailgunService];
 
 var handleEmail = function(recipient, subject, content, callback){
