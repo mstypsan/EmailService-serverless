@@ -25,7 +25,7 @@ var buildEmail = function(emailMessage) {
     to: emailMessage.recipient,
     subject: emailMessage.subject,
     html: emailMessage.content,
-    messageId: emailMessage.id
+    'v:messageId': emailMessage.id
   };
   
   return email;
