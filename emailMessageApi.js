@@ -8,9 +8,8 @@ var emailRepository = require('./libs/emailRepository');
 
 var getEmailMessage = function(event, context, callback) {
   var emailMessageId = event.emailMessageId;
-
   if(!emailMessageId){
-    var error = "EmailMessageId is required"
+    var error = "emailMessageId is required"
   }
 
   if(error){
