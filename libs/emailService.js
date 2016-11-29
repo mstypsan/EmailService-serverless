@@ -26,7 +26,7 @@ var sendEmail = function(emailMessage, callback) {
   async.someSeries(emailProviders, sendEmailWithProvider.bind(sendEmailWithProvider, emailMessage), function (err, success) {
     if(success) {
       winston.info('Done processing e-mail id: ' + emailMessage.id);
-      callback();
+      callback(null, emailMessage.id);
     }
     else {
       //At this point the e-mail will not be sent.
