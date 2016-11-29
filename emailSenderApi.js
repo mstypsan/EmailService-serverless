@@ -28,12 +28,12 @@ var sendEmail = function(event, context, callback) {
   }
 
   winston.info('E-mail ready to be sent to: ' + recipient);
-  emailService.handleEmail(recipient, subject, content, function(error){
+  emailService.handleEmail(recipient, subject, content, function(error, emailMessageId){
     if(!error) {
-      callback(null, 'E-mail is processed');
+      callback(null, {emailMessageId: emailMessageId, message: 'E-mail is processed'});
     }
     else {
-      callback(JSON.stringify({error:"Unexpected error", statusCode: 500}));
+      callback(JSON.stringify({error: "Unexpected error", statusCode: 500}));
     }
   });
 };
