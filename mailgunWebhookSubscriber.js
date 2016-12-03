@@ -18,11 +18,15 @@ var receiveWebhook = function(event, context, callback) {
   }
 
   var emailStatus = getEmailStatus(emailMessage);
+  if(!emailStatus) {
+    callback();
+    return;
+  }
   emailStatus.emailService = 'Mailgun';
   emailStatus.emailIdFromService = emailMessage["Message-Id"];
   emailRepository.updateEventStatus(emailMessage.messageId, emailStatus, function (error) {
     if (!error) {
-      callback();
+      callback(null, {statusCode: 200});
     }
     else {
       callback(JSON.stringify({error: error, statusCode: 500}));

@@ -13,11 +13,15 @@ var receiveWebhook = function(event, context, callback) {
     var emailMessage = emailMessages[i];
 
     var emailStatus = getEmailStatus(emailMessage);
+    if(!emailStatus) {
+      callback();
+      return;
+    }
     emailStatus.emailService = 'Sendgrid';
     emailStatus.emailIdFromService = emailMessage.sg_message_id;
     emailRepository.updateEventStatus(emailMessage.messageId, emailStatus, function (error) {
       if (!error) {
-        callback();
+        callback(null, {statusCode: 200});
       }
       else {
         callback(JSON.stringify({error: error, statusCode: 500}));
