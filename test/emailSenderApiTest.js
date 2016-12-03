@@ -11,8 +11,8 @@ describe('Email service API', function () {
     emailServiceStub = sinon.stub();
     contextStub = sinon.stub();
     emailSenderApi = proxyquire('../emailSenderApi', {
-      './libs/emailService': {
-        sendEmail: emailServiceStub
+      './libs/service/emailService': {
+        handleEmail: emailServiceStub
       }
     });
 
