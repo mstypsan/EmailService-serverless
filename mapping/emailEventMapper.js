@@ -18,9 +18,8 @@ var mapDroppedStatus = function(errorCode, errorDescription, reason, timestamp) 
   return emailStatus;
 };
 
-var mapSpamReportStatus = function(errorCode, errorDescription, reason, timestamp) {
+var mapSpamReportStatus = function(timestamp) {
   var emailStatus = new EmailStatus('spam-reported', timestamp);
-  setErrorMessage(emailStatus, errorCode, errorDescription, reason);
   return emailStatus;
 };
 
