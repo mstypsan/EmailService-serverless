@@ -3,7 +3,7 @@ var proxyquire = require('proxyquire');
 var sinon = require('sinon');
 var assert = require('assert');
 
-describe('Email service API', function () {
+describe('Email sender API', function () {
   var emailSenderApi, emailServiceStub, contextStub;
 
   beforeEach(function () {
