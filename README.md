@@ -1,8 +1,9 @@
 # EmailService
 Simple e-mail service API that is responsible for sending an e-mail to a single recipient. It uses 2 different e-mail providers, Sendgrid and Mailgun, in order to send the e-mail. It will start by using by default Sendgrid and if Sendgrid fails, it will try again using Mailgun. So this way it ensures that the e-mail will successfully be sent. It is a backend service built in node.js and exposes APIs that can be used to pass the necessary information and then send the e-mail.
-The service will later listen to webhook events from both Sendgrid and Mailgun, in order to get the status from the e-mail. This way we ensure that bounced, or dropped emails are recorded. More specifically the event the service subscribes to is delivered, bounce, dropped, spamreport, deferred for Sendgrid and delivered, bounced, dropped, complained for Mailgun.
+The service will later listen to webhook events from both Sendgrid and Mailgun, in order to get the status from the e-mail. This way we ensure that bounced, or dropped emails are recorded. More specifically the events the service subscribes to, is delivered, bounce, dropped, spamreport, deferred for Sendgrid and delivered, bounced, dropped, complained for Mailgun.
 
-# Example
+# APIs
+##Sending an e-mail##
 You can send an e-mail with a POST request
 
 **<code> POST </code> /email-service/email/send** 
@@ -12,7 +13,7 @@ You can send an e-mail with a POST request
 - **content** _(required)_ The content of the e-mail.
 - **recipient** _(required)_ The recipient of the e-mail.
 
-**Request body**
+**Request body example**
 ```JSON
 {
     "subject":"Subject of the e-mail", 
@@ -21,21 +22,28 @@ You can send an e-mail with a POST request
 }
 ``` 
 
-**Response**
+##Response##
 The response will have a status of 200 if the e-mail is accepted indicating that it will be processed. The response will also contain the id of the e-mail message which the client can later use to retrieve the status of the e-mail.
-
-You can check the status of only a single e-mail with a GET request
-
-<code> GET </code> /email-service/email/{emailMessageId}
-
-##Parameter##
-- **emailMessageId** _(required)_ — The id of the e-mail message.
-
-**Response**
-The response will display the status of the e-mail
-##Example##
 ```JSON
-"email": {
+"message": {
+"emailMessageId": "123",
+"message": "E-mail is processed"
+}
+
+```
+
+##Getting status of an e-mail##
+You can check the status of a single e-mail only using a GET request
+
+**<code> GET </code> /email-service/email/{emailMessageId}**
+
+##Parameters##
+- **emailMessageId** _(required)_ The id of the e-mail message.
+
+##Response##
+The response will display the status of the e-mail
+```JSON
+"emailMessage": {
 "id": "12345",
 "sender": "email@email.com",
 "recipient": "email@email.com",
@@ -48,7 +56,7 @@ The response will display the status of the e-mail
 }
 ```
 
-The service is deployed using Amazon's serverless services, AWS lambda and AWS Api Gateway. AWS lambda is hosted by Amazon that ensures high availability and scaling according to the number of requests. And API gateway helps at exposing HTTP endpoints that later communicates with AWS lambda.
+The service is deployed using Amazon's serverless services, AWS lambda and AWS Api Gateway. AWS lambda is hosted by Amazon that ensures high availability and scaling according to the number of requests. And API gateway helps with exposing HTTP endpoints that later communicate with AWS lambda.
 The API Gateway is responsible for mapping the response of lambda to the actual http status code. The mapping is not really flexible at this point and it causes some configuration problems. Another issue that was faced here is how to accept POST with Content-Type: application/x-www-form-urlencoded. Some extra mappings had been used from https://gist.github.com/199911/68a43f83fd933b1e3ac6 in order to support it.
 Overall the configuration on the API Gateway made the development more difficult.
 
