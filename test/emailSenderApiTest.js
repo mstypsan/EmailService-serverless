@@ -3,7 +3,7 @@ var proxyquire = require('proxyquire');
 var sinon = require('sinon');
 var assert = require('assert');
 
-describe('Email service API', function () {
+describe('Email sender API', function () {
   var emailSenderApi, emailServiceStub, contextStub;
 
   beforeEach(function () {
@@ -11,8 +11,8 @@ describe('Email service API', function () {
     emailServiceStub = sinon.stub();
     contextStub = sinon.stub();
     emailSenderApi = proxyquire('../emailSenderApi', {
-      './libs/emailService': {
-        sendEmail: emailServiceStub
+      './libs/service/emailService': {
+        handleEmail: emailServiceStub
       }
     });
 

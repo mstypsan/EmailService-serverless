@@ -3,10 +3,10 @@ require('le_node');
 var dotenv = require('dotenv');
 dotenv.config();
 var winston = require('winston');
-var emailService = require('./libs/emailService');
+var emailService = require('./libs/service/emailService');
 var validator = require('validator');
 
-function sendEmail(event, context, callback) {
+var sendEmail = function(event, context, callback) {
   var subject = event.subject;
   var content = event.content;
   var recipient = event.recipient;
@@ -23,20 +23,20 @@ function sendEmail(event, context, callback) {
   }
   
   if(errors.length){
-    callback(JSON.stringify({error:errors, errorCode:4001}));
+    callback(JSON.stringify({error:errors, statusCode: 400}));
     return
   }
 
   winston.info('E-mail ready to be sent to: ' + recipient);
-  emailService.sendEmail(recipient, subject, content, function(error){
+  emailService.handleEmail(recipient, subject, content, function(error, emailMessageId){
     if(!error) {
-      callback(null, 'E-mail is processed');
+      callback(null, JSON.stringify({emailMessageId: emailMessageId, message: 'E-mail is processed', statusCode: 200}));
     }
     else {
-      callback(JSON.stringify({error:"Unexpected error", errorCode:5001}));
+      callback(JSON.stringify({error: "Unexpected error", statusCode: 500}));
     }
   });
-}
+};
 
 module.exports = {
   sendEmail: sendEmail

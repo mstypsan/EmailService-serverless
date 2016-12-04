@@ -4,13 +4,16 @@ var sinon = require('sinon');
 var assert = require('assert');
 
 describe('Email service', function () {
-  var emailService, sendgridStub, mailgunStub;
+  var emailService, sendgridStub, mailgunStub, emailRepositoryStub;
 
   beforeEach(function () {
-    this.timeout(3000);
     sendgridStub = sinon.stub();
     mailgunStub = sinon.stub();
-    emailService = proxyquire('../libs/emailService', {
+    emailRepositoryStub = sinon.stub();
+    emailService = proxyquire('../libs/service/emailService', {
+      './../emailRepository': {
+        saveEmail: emailRepositoryStub
+      },
       './sendgridService': {
         sendEmail: sendgridStub
       },
@@ -20,21 +23,34 @@ describe('Email service', function () {
     });
   });
 
-  it('if no error is thrown it should ensure that the message was sent with one provider', function () {
-    emailService.sendEmail('test@email.com', 'subject', 'content');
-    assert(sendgridStub.calledOnce || mailgunStub.calledOnce);
-    assert(sendgridStub.calledOnce && mailgunStub.calledOnce == false);
+  it('if no error is thrown it should ensure that the message was sent with one provider', function (done) {
+    emailRepositoryStub.yields(null);
+    sendgridStub.yields(null);
+    mailgunStub.yields(null);
+    emailService.handleEmail('test@email.com', 'subject', 'content', function(error) {
+      assert(sendgridStub.calledOnce || mailgunStub.calledOnce);
+      assert((sendgridStub.calledOnce && mailgunStub.calledOnce) == false);
+      done();
+    });
   });
 
-  it('if sendgrid throws an error it should fallback to mailgun', function () {
+  it('if sendgrid throws an error it should fallback to mailgun', function (done) {
+    emailRepositoryStub.yields(null);
     sendgridStub.yields('error');
-    emailService.sendEmail('test@email.com', 'subject', 'content');
-    assert(mailgunStub.calledOnce);
+    mailgunStub.yields(null);
+    emailService.handleEmail('test@email.com', 'subject', 'content', function(error) {
+      assert(mailgunStub.calledOnce);
+      done();
+    });
   });
 
-  it('if mailgun throws an error it should fallback to sendgrid', function () {
+  it('if mailgun throws an error it should fallback to sendgrid', function (done) {
+    emailRepositoryStub.yields(null);
     mailgunStub.yields('error');
-    emailService.sendEmail('test@email.com', 'subject', 'content');
-    assert(sendgridStub.calledOnce);
+    sendgridStub.yields(null);
+    emailService.handleEmail('test@email.com', 'subject', 'content', function(error) {
+      assert(sendgridStub.calledOnce);
+      done();
+    });
   });
 });
