@@ -33,14 +33,11 @@ var getEmailMessage = function(event, context, callback) {
         emailStatuses.push({status: emailStatus.status, timestamp: emailStatus.timestamp});
       });
 
-      var mappedEmailMessage = {
-        id: emailMessage.id,
+      callback(null, JSON.stringify({id: emailMessage.id,
         sender: emailMessage.sender,
         recipient: emailMessage.recipient,
-        emailStatus: emailStatuses
-      };
-
-      callback(null, JSON.stringify({email: mappedEmailMessage, statusCode: 200}));
+        emailStatus: emailStatuses,
+        statusCode: 200}));
     }
     else {
       callback(JSON.stringify({error:"Unexpected error", statusCode: 500}));
