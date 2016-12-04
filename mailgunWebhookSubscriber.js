@@ -10,7 +10,6 @@ var mailgun = new Mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: process.
 
 var receiveWebhook = function(event, context, callback) {
   var emailMessage = event;
-  winston.info(event);
   if (!mailgun.validateWebhook(emailMessage.timestamp, emailMessage.token, emailMessage.signature)) {
     winston.info('Request came, but not from Mailgun');
     callback(JSON.stringify({error: 'Invalid signature. Are you even Mailgun?', errorCode: 4001, statusCode: 406}));
