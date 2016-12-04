@@ -22,7 +22,7 @@ You can send an e-mail with a POST request
 }
 ``` 
 
-**Response**
+##Response##
 The response will have a status of 200 if the e-mail is accepted indicating that it will be processed. The response will also contain the id of the e-mail message which the client can later use to retrieve the status of the e-mail.
 ```JSON
 "message": {
