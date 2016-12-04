@@ -21,7 +21,7 @@ var receiveWebhook = function(event, context, callback) {
     emailStatus.emailIdFromService = emailMessage.sg_message_id;
     emailRepository.updateEventStatus(emailMessage.messageId, emailStatus, function (error) {
       if (!error) {
-        callback(null, {statusCode: 200});
+        callback(null, JSON.stringify({statusCode: 200}));
       }
       else {
         callback(JSON.stringify({error: error, statusCode: 500}));

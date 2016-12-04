@@ -8,6 +8,7 @@ var emailRepository = require('./libs/emailRepository');
 
 var getEmailMessage = function(event, context, callback) {
   var emailMessageId = event.emailMessageId;
+  winston.info("Received request " + event);
   if(!emailMessageId){
     var error = "emailMessageId is required"
   }
@@ -39,7 +40,7 @@ var getEmailMessage = function(event, context, callback) {
         emailStatus: emailStatuses
       };
 
-      callback(null, mappedEmailMessage);
+      callback(null, JSON.stringify({email: mappedEmailMessage, statusCode: 200}));
     }
     else {
       callback(JSON.stringify({error:"Unexpected error", statusCode: 500}));
