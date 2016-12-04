@@ -32,6 +32,7 @@ var buildEmail = function(emailMessage) {
   var subject = emailMessage.subject;
   var content = new sendgridHelper.Content('text/html', emailMessage.content);
   var email = new sendgridHelper.Mail(sender, subject, recipient, content);
+  email.addCustomArg({messageId: emailMessage.id});
 
   return email;
 };

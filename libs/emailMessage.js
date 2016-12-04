@@ -6,6 +6,7 @@ function emailMessage(sender, recipient, subject, content){
   this.recipient = recipient;
   this.subject = subject;
   this.content = content;
+  this.emailStatus = [];
 }
 
 module.exports = emailMessage;

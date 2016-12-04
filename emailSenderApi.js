@@ -6,7 +6,7 @@ var winston = require('winston');
 var emailService = require('./libs/emailService');
 var validator = require('validator');
 
-function sendEmail(event, context, callback) {
+var sendEmail = function(event, context, callback) {
   var subject = event.subject;
   var content = event.content;
   var recipient = event.recipient;
@@ -28,7 +28,7 @@ function sendEmail(event, context, callback) {
   }
 
   winston.info('E-mail ready to be sent to: ' + recipient);
-  emailService.sendEmail(recipient, subject, content, function(error){
+  emailService.handleEmail(recipient, subject, content, function(error){
     if(!error) {
       callback(null, 'E-mail is processed');
     }
@@ -36,7 +36,7 @@ function sendEmail(event, context, callback) {
       callback(JSON.stringify({error:"Unexpected error", errorCode:5001}));
     }
   });
-}
+};
 
 module.exports = {
   sendEmail: sendEmail
