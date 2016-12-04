@@ -43,7 +43,7 @@ You can check the status of a single e-mail only using a GET request
 ##Response##
 The response will display the status of the e-mail
 ```JSON
-"email": {
+"emailMessage": {
 "id": "12345",
 "sender": "email@email.com",
 "recipient": "email@email.com",
