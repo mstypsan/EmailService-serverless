@@ -66,5 +66,5 @@ var buildSendgridEvent = function(messageId, event, timestamp, sendgridEmailId){
       'messageId': messageId
     }
   ];
-  return sendgridEvent
+  return sendgridEvent;
 };
