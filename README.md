@@ -56,12 +56,13 @@ The response will display the status of the e-mail
 }
 ```
 
+##Deployment##
 The service is deployed using Amazon's serverless services, AWS lambda and AWS Api Gateway. AWS lambda is hosted by Amazon that ensures high availability and scaling according to the number of requests. And API gateway helps with exposing HTTP endpoints that later communicate with AWS lambda.
 The API Gateway is responsible for mapping the response of lambda to the actual http status code. The mapping is not really flexible at this point and it causes some configuration problems. Another issue that was faced here is how to accept POST with Content-Type: application/x-www-form-urlencoded. Some extra mappings had been used from https://gist.github.com/199911/68a43f83fd933b1e3ac6 in order to support it.
 Overall the configuration on the API Gateway made the development more difficult.
 
 ##Running tests##
-You can run tests using mocha by just running mocha test.
+You can run tests using mocha by just running mocha test. Proxyquire is used to stub the external dependencies. But one small issues is to identify why there is a test that times out sometimes.
 
 
 ##Limitations
