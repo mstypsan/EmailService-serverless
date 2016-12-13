@@ -8,7 +8,8 @@ var emailRepository = require('./libs/emailRepository');
 
 var getEmailMessage = function(event, context, callback) {
   var emailMessageId = event.emailMessageId;
-  winston.info("Received request " + event);
+  winston.info("Received request " + JSON.stringify(event));
+
   if(!emailMessageId){
     var error = "emailMessageId is required"
   }
@@ -18,30 +19,32 @@ var getEmailMessage = function(event, context, callback) {
     return
   }
 
-  emailRepository.getEmail(emailMessageId, function(error, data){
-    if(!error) {
-      if(!data || !data.Items.length) {
-        winston.info('Email message not found id:' + emailMessageId);
-        callback(JSON.stringify({error:"Email message is not found", statusCode: 404}));
-        return;
-      }
-
-      var emailMessage = data.Items[0];
-      var emailStatuses = [];
-      emailMessage.emailStatus.forEach(function(item) {
-        var emailStatus = JSON.parse(item);
-        emailStatuses.push({status: emailStatus.status, timestamp: emailStatus.timestamp});
-      });
-
-      callback(null, JSON.stringify({id: emailMessage.id,
-        sender: emailMessage.sender,
-        recipient: emailMessage.recipient,
-        emailStatus: emailStatuses,
-        statusCode: 200}));
+  emailRepository.getEmail(emailMessageId, function(error, data) {
+    if (error) {
+      callback(JSON.stringify({error: 'Unexpected error', statusCode: 500}));
+      return
     }
-    else {
-      callback(JSON.stringify({error:"Unexpected error", statusCode: 500}));
+
+    if (!data || !data.Items.length) {
+      winston.info('Email message not found id:' + emailMessageId);
+      callback(JSON.stringify({error: 'Email message is not found', statusCode: 404}));
+      return
     }
+
+    var emailMessage = data.Items[0];
+    var emailStatuses = [];
+    emailMessage.emailStatus.forEach(function (item) {
+      var emailStatus = JSON.parse(item);
+      emailStatuses.push({status: emailStatus.status, timestamp: emailStatus.timestamp});
+    });
+
+    callback(null, JSON.stringify({
+      id: emailMessage.id,
+      sender: emailMessage.sender,
+      recipient: emailMessage.recipient,
+      emailStatus: emailStatuses,
+      statusCode: 200
+    }));
   });
 };
 

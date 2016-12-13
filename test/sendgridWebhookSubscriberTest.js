@@ -1,25 +1,24 @@
 'use strict';
-var proxyquire = require('proxyquire');
+var proxyquire = require('proxyquire').noCallThru();
 var sinon = require('sinon');
 var assert = require('assert');
 var EmailStatus = require('../libs/emailStatus');
 
 describe('Sendgrid webhook API', function () {
-  var sendgridWebhookSubscriber, emailRepositoryUpdateStub, contextStub;
+  var sendgridWebhookSubscriber, emailRepositoryStub, contextStub;
 
   beforeEach(function () {
-    emailRepositoryUpdateStub = sinon.stub();
+    emailRepositoryStub = sinon.stub();
+    emailRepositoryStub.updateEventStatus = sinon.stub();
     contextStub = sinon.stub();
     sendgridWebhookSubscriber = proxyquire('../sendgridWebhookSubscriber', {
-      './libs/emailRepository': {
-        updateEventStatus: emailRepositoryUpdateStub
-      }
+      './libs/emailRepository':  emailRepositoryStub
     });
   });
 
   function testSendgridWebhookWIthDifferentEvents(test_case) {
     it(test_case.describe, function(done) {
-      emailRepositoryUpdateStub.yields(null);
+      emailRepositoryStub.updateEventStatus.yields(null);
       var messageId = '123';
       var timestamp = 1337197600;
       var sendgridEmailId = 'sendgrid_internal_message_id';
@@ -28,7 +27,7 @@ describe('Sendgrid webhook API', function () {
       emailStatus.emailService = 'Sendgrid';
       emailStatus.emailIdFromService = sendgridEmailId;
       sendgridWebhookSubscriber.receiveWebhook(event, contextStub, function(error){
-        assert(emailRepositoryUpdateStub.calledWithMatch(messageId, emailStatus, sinon.match.any));
+        assert(emailRepositoryStub.updateEventStatus.calledWithMatch(messageId, emailStatus, sinon.match.any));
         done();
       });
     });
@@ -44,13 +43,13 @@ describe('Sendgrid webhook API', function () {
   }
 
   it('if the event type is unknown, it should not save the status', function (done) {
-    emailRepositoryUpdateStub.yields(null);
+    emailRepositoryStub.updateEventStatus.yields(null);
     var messageId = '123';
     var timestamp = 1337197600;
     var sendgridEmailId = 'sendgrid_internal_message_id';
     var event = buildSendgridEvent(messageId, 'unknown_event', timestamp, sendgridEmailId);
     sendgridWebhookSubscriber.receiveWebhook(event, contextStub, function(error){
-      assert(emailRepositoryUpdateStub.notCalled);
+      assert(emailRepositoryStub.updateEventStatus.notCalled);
       done();
     });
   });

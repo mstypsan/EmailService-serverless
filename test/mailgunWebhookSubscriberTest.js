@@ -1,25 +1,24 @@
 'use strict';
-var proxyquire = require('proxyquire');
+var proxyquire = require('proxyquire').noCallThru();
 var sinon = require('sinon');
 var assert = require('assert');
 var EmailStatus = require('../libs/emailStatus');
 
 describe('Mailgun webhook API', function () {
-  var mailgunWebhookSubscriber, emailRepositoryUpdateStub, contextStub;
+  var mailgunWebhookSubscriber, emailRepositoryStub, contextStub;
 
   beforeEach(function () {
-    emailRepositoryUpdateStub = sinon.stub();
+    emailRepositoryStub = sinon.stub();
+    emailRepositoryStub.updateEventStatus = sinon.stub();
     contextStub = sinon.stub();
     mailgunWebhookSubscriber = proxyquire('../mailgunWebhookSubscriber', {
-      './libs/emailRepository': {
-        updateEventStatus: emailRepositoryUpdateStub
-      }
+      './libs/emailRepository': emailRepositoryStub
     });
   });
 
   function testMailgunWebhookWIthDifferentEvents(test_case) {
     it(test_case.describe, function(done) {
-      emailRepositoryUpdateStub.yields(null);
+      emailRepositoryStub.updateEventStatus.yields(null);
       var messageId = '123';
       var timestamp = 1337197600;
       var mailgunEmailId = 'mailgun_internal_message_id';
@@ -28,7 +27,7 @@ describe('Mailgun webhook API', function () {
       emailStatus.emailService = 'Mailgun';
       emailStatus.emailIdFromService = mailgunEmailId;
       mailgunWebhookSubscriber.receiveWebhook(event, contextStub, function(error){
-        assert(emailRepositoryUpdateStub.calledWithMatch(messageId, emailStatus, sinon.match.any));
+        assert(emailRepositoryStub.updateEventStatus.calledWithMatch(messageId, emailStatus, sinon.match.any));
         done();
       });
     });
@@ -43,13 +42,13 @@ describe('Mailgun webhook API', function () {
   }
 
   it('if the event type is unknown, it should not save the status', function (done) {
-    emailRepositoryUpdateStub.yields(null);
+    emailRepositoryStub.updateEventStatus.yields(null);
     var messageId = '123';
     var timestamp = 1337197600;
     var mailgunEmailId = 'mailgun_internal_message_id';
     var event = buildMailgunEvent(messageId, 'unknown_event', timestamp, mailgunEmailId);
     mailgunWebhookSubscriber.receiveWebhook(event, contextStub, function(error){
-      assert(emailRepositoryUpdateStub.notCalled);
+      assert(emailRepositoryStub.updateEventStatus.notCalled);
       done();
     });
   });
@@ -60,10 +59,8 @@ var buildMailgunEvent = function(messageId, event, timestamp, mailgunEmailId){
   var mailgunEvent = {
     "timestamp": timestamp,
     "recipient": "email@email.com",
-    "domain": "sandbox00deadf9fa0f40e4a8caec4cf3608084.mailgun.org",
+    "domain": "sandbox1234.mailgun.org",
     "Message-Id": mailgunEmailId,
-    //"token": "8232d2421d8f06800435ef8191b9df60cabd15698d1f296163",
-    //"signature": "8961484b731f5f1d2fb1935e706c811c95cad43443f4211f2db267c0822a3d39",
     "event": event,
     "messageId": messageId
   };

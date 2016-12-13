@@ -29,9 +29,7 @@ var sendEmail = function(emailMessage, callback) {
       callback(null, emailMessage.id);
     }
     else {
-      //At this point the e-mail will not be sent.
-      //We will later need to do some retries
-      winston.error('Unable to process e-mail for recipient: ' + recipient);
+      winston.error('Unable to process e-mail id: ' + emailMessage.id);
       callback('Not processed');
     }
   });

@@ -33,7 +33,7 @@ var sendEmail = function(event, context, callback) {
       callback(null, JSON.stringify({emailMessageId: emailMessageId, message: 'E-mail is processed', statusCode: 200}));
     }
     else {
-      callback(JSON.stringify({error: "Unexpected error", statusCode: 500}));
+      callback(JSON.stringify({error: 'Unexpected error', statusCode: 500}));
     }
   });
 };

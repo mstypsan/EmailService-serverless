@@ -1,5 +1,5 @@
 'use strict';
-var proxyquire = require('proxyquire');
+var proxyquire = require('proxyquire').noCallThru();
 var sinon = require('sinon');
 var assert = require('assert');
 
@@ -7,13 +7,11 @@ describe('Email sender API', function () {
   var emailSenderApi, emailServiceStub, contextStub;
 
   beforeEach(function () {
-    this.timeout(3000);
     emailServiceStub = sinon.stub();
+    emailServiceStub.handleEmail = sinon.stub();
     contextStub = sinon.stub();
     emailSenderApi = proxyquire('../emailSenderApi', {
-      './libs/service/emailService': {
-        handleEmail: emailServiceStub
-      }
+      './libs/service/emailService': emailServiceStub
     });
 
   });
@@ -21,7 +19,7 @@ describe('Email sender API', function () {
   it('if the subject of the e-mail does not exist, it should not send the e-mail', function (done) {
     var payload = buildPayload(null, "content", "email@email.com");
     emailSenderApi.sendEmail(payload, contextStub, function(error){
-      assert(emailServiceStub.notCalled);
+      assert(emailServiceStub.handleEmail.notCalled);
       assert(error);
       done();
     });
@@ -30,7 +28,7 @@ describe('Email sender API', function () {
   it('if the content of the e-mail does not exist, it should not send the e-mail', function (done) {
     var payload = buildPayload("subject", null, "email@email.com");
     emailSenderApi.sendEmail(payload, contextStub, function(error) {
-      assert(emailServiceStub.notCalled);
+      assert(emailServiceStub.handleEmail.notCalled);
       assert(error);
       done();
     });
@@ -39,17 +37,17 @@ describe('Email sender API', function () {
   it('if the recipient of the e-mail is not a valid, it should not send the e-mail', function (done) {
     var payload = buildPayload("subject", "content", "not_email.com");
     emailSenderApi.sendEmail(payload, contextStub, function(error){
-      assert(emailServiceStub.notCalled);
+      assert(emailServiceStub.handleEmail.notCalled);
       assert(error);
       done();
     });
   });
 
   it('if the e-mail passes the validation, it should send the e-mail', function (done) {
-    emailServiceStub.yields(null);
+    emailServiceStub.handleEmail.yields(null);
     var payload = buildPayload("subject", "content", "email@email.com");
     emailSenderApi.sendEmail(payload, contextStub, function(error) {
-      assert(emailServiceStub.calledOnce);
+      assert(emailServiceStub.handleEmail.calledOnce);
       assert(!error);
       done();
     });
