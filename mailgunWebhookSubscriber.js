@@ -13,16 +13,16 @@ var receiveWebhook = function(event, context, callback) {
   if (!mailgun.validateWebhook(emailMessage.timestamp, emailMessage.token, emailMessage.signature)) {
     winston.info('Request came, but not from Mailgun');
     callback(JSON.stringify({error: 'Invalid signature. Are you even Mailgun?', errorCode: 4001, statusCode: 406}));
-    return;
+    return
   }
 
   var emailStatus = getEmailStatus(emailMessage);
   if(!emailStatus) {
     callback();
-    return;
+    return
   }
   emailStatus.emailService = 'Mailgun';
-  emailStatus.emailIdFromService = emailMessage["Message-Id"];
+  emailStatus.emailIdFromService = emailMessage['Message-Id'];
   emailRepository.updateEventStatus(emailMessage.messageId, emailStatus, function (error) {
     if (!error) {
       callback(null, JSON.stringify({statusCode: 200}));

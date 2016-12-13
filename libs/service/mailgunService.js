@@ -13,7 +13,7 @@ var sendEmail = function(emailMessage, callback){
       callback(null);
     }
     else {
-      winston.error('Mailgun failed on sending the e-mail with id: ' + emailMessage.id + '. Error: ' + JSON.stringify(response));
+      winston.error('Mailgun failed to send the e-mail with id: ' + emailMessage.id + '. Error: ' + JSON.stringify(response));
       callback(error);
     }
   });
