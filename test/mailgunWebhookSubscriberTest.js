@@ -62,8 +62,6 @@ var buildMailgunEvent = function(messageId, event, timestamp, mailgunEmailId){
     "recipient": "email@email.com",
     "domain": "sandbox00deadf9fa0f40e4a8caec4cf3608084.mailgun.org",
     "Message-Id": mailgunEmailId,
-    //"token": "8232d2421d8f06800435ef8191b9df60cabd15698d1f296163",
-    //"signature": "8961484b731f5f1d2fb1935e706c811c95cad43443f4211f2db267c0822a3d39",
     "event": event,
     "messageId": messageId
   };
