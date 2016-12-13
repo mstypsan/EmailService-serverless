@@ -60,7 +60,7 @@ var buildMailgunEvent = function(messageId, event, timestamp, mailgunEmailId){
   var mailgunEvent = {
     "timestamp": timestamp,
     "recipient": "email@email.com",
-    "domain": "sandbox00deadf9fa0f40e4a8caec4cf3608084.mailgun.org",
+    "domain": "sandbox1234.mailgun.org",
     "Message-Id": mailgunEmailId,
     "event": event,
     "messageId": messageId
