@@ -8,10 +8,10 @@ var emailRepository = require('./libs/emailRepository');
 
 var getEmailMessage = function(event, context, callback) {
   var emailMessageId = event.emailMessageId;
-  winston.info("Received request " + JSON.stringify(event));
+  winston.info('Received request ' + JSON.stringify(event));
 
   if(!emailMessageId){
-    var error = "emailMessageId is required"
+    var error = 'emailMessageId is required';
   }
 
   if(error){
