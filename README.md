@@ -8,7 +8,7 @@ You can send an e-mail with a POST request
 
 **<code> POST </code> /email-service/email/send** 
 
-##Parameters##
+## Parameters ##
 - **subject** _(required)_ The subject of the e-mail.
 - **content** _(required)_ The content of the e-mail.
 - **recipient** _(required)_ The recipient of the e-mail.
