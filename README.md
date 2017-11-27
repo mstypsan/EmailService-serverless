@@ -22,7 +22,7 @@ You can send an e-mail with a POST request
 }
 ``` 
 
-##Response##
+## Response ##
 The response will have a status of 200 if the e-mail is accepted indicating that it will be processed. The response will also contain the id of the e-mail message which the client can later use to retrieve the status of the e-mail.
 ```JSON
 "message": {
@@ -32,12 +32,12 @@ The response will have a status of 200 if the e-mail is accepted indicating that
 
 ```
 
-##Getting status of an e-mail##
+## Getting status of an e-mail##
 You can check the status of a single e-mail only using a GET request
 
 **<code> GET </code> /email-service/email/{emailMessageId}**
 
-##Parameters##
+## Parameters##
 - **emailMessageId** _(required)_ The id of the e-mail message.
 
 ##Response##
@@ -56,16 +56,16 @@ The response will display the status of the e-mail
 }
 ```
 
-##Deployment##
+## Deployment##
 The service is deployed using Amazon's serverless services, AWS lambda and AWS Api Gateway. AWS lambda is hosted by Amazon that ensures high availability and scaling according to the number of requests. And API gateway helps with exposing HTTP endpoints that later communicate with AWS lambda.
 The API Gateway is responsible for mapping the response of lambda to the actual http status code. The mapping is not really flexible at this point and it causes some configuration problems. Another issue that was faced here is how to accept POST with Content-Type: application/x-www-form-urlencoded. Some extra mappings had been used from https://gist.github.com/199911/68a43f83fd933b1e3ac6 in order to support it.
 Overall the configuration on the API Gateway made the development more difficult.
 
-##Running tests##
+## Running tests##
 You can run tests using mocha by just running mocha test. Proxyquire is used to stub the external dependencies. But one small issues is to identify why there is a test that times out sometimes.
 
 
-##Limitations
+## Limitations
 - AWS lambda does not allow for the payload to be more than 128KB http://docs.aws.amazon.com/lambda/latest/dg/limits.html#limits-list
 - The service is build using only one e-mail recipient. 
 - It currently does not support any authorization and it is public for everyone.
