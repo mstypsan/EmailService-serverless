@@ -3,7 +3,7 @@ Simple e-mail service API that is responsible for sending an e-mail to a single 
 The service will later listen to webhook events from both Sendgrid and Mailgun, in order to get the status from the e-mail. This way we ensure that bounced, or dropped emails are recorded. More specifically the events the service subscribes to, is delivered, bounce, dropped, spamreport, deferred for Sendgrid and delivered, bounced, dropped, complained for Mailgun.
 
 # APIs
-##Sending an e-mail##
+## Sending an e-mail ##
 You can send an e-mail with a POST request
 
 **<code> POST </code> /email-service/email/send** 
